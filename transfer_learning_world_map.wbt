@@ -9,14 +9,16 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/Parquetry.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/BrushedAluminium.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/devices/multisense/protos/MultiSenseS21.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/balls/protos/Ball.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/obstacles/protos/OilBarrel.proto"
 
 WorldInfo {
   gravity 0
   basicTimeStep 16
 }
 Viewpoint {
-  orientation 0.3019310686119419 0.12320817314480902 -0.9453345311989664 2.405242092392154
-  position 2.3128206774983933 2.583195383822785 3.5649570926034198
+  orientation -0.31120925087111345 0.744320557299409 0.590877068563113 1.2316423138432162
+  position -3.190048663067496 -3.2285357455979695 6.732912740554799
 }
 TexturedBackground {
 }
@@ -35,9 +37,14 @@ RectangleArena {
     IBLStrength 100
   }
 }
+OilBarrel {
+  translation 0 -0.24 0.1
+  height 0.2
+  radius 0.07
+}
 Robot {
-  translation -8.484209999999603e-06 -8.02185000023381e-08 0.012823000000000029
-  rotation 0.00011372598893038492 -0.0004263079585048772 -0.9999999026639571 0.523595307179586
+  translation -0.014640900000000005 0.015397200000000003 0.008648689999999792
+  rotation 0.006452327955072893 -0.001146774676877095 -0.999978525955333 0.52341757345616
   children [
     MultiSenseS21 {
       translation -0.0599945 -9.66254e-06 2.07
@@ -67,7 +74,7 @@ Robot {
     }
     HingeJoint {
       jointParameters HingeJointParameters {
-        position -7.477436031616236e-10
+        position -7.477436032568897e-10
         axis 0 1 0
         anchor 0 0 0.02
       }
@@ -83,8 +90,8 @@ Robot {
         }
       ]
       endPoint DEF EPUCK_LEFT_WHEEL Solid {
-        translation 4.306315503840863e-18 0.02599999999999999 0.019999999999999973
-        rotation 0.00016750711246993832 -0.034789884413282575 -0.9993946347083706 9.945005247753625e-17
+        translation 6.938893903907228e-18 0.025999999999999995 0.020000000000001527
+        rotation -3.2223005451212416e-06 -0.9999999918277739 0.00012780480870289046 1.734632535802829e-12
         children [
           DEF EPUCK_WHEEL Pose {
             rotation 1 0 0 -1.570796
@@ -216,13 +223,13 @@ Robot {
           density -1
           mass 0.005
         }
-        linearVelocity -4.899582352168144e-17 -4.030427965148518e-18 1.1929661250091139e-16
-        angularVelocity -1.562925370350847e-19 -4.657934324062768e-20 -3.473810140769638e-15
+        linearVelocity 4.1833161067053896e-18 1.102426191521676e-17 8.64770808235148e-17
+        angularVelocity 1.2747277312444549e-17 2.075745390326848e-18 -2.1806987420780647e-15
       }
     }
     HingeJoint {
       jointParameters HingeJointParameters {
-        position -7.477853583803181e-10
+        position -7.477853582870601e-10
         axis 0 1 0
         anchor 0 0 0.02
       }
@@ -238,8 +245,8 @@ Robot {
         }
       ]
       endPoint DEF EPUCK_RIGHT_WHEEL Solid {
-        translation -2.008484524529397e-17 -0.025999999999999995 0.019999999999999973
-        rotation 0.00016750711246993832 -0.034789884413282575 -0.9993946347083706 9.945005247753625e-17
+        translation 1.734723475976807e-17 -0.02599999999999999 0.020000000000002727
+        rotation -1.3548302459457231e-06 0.9999999503198954 -0.00031521162943978727 2.170601164546328e-12
         children [
           Pose {
             rotation 1 0 0 3.14159
@@ -251,8 +258,8 @@ Robot {
         name "right wheel"
         boundingObject USE EPUCK_WHEEL_BOUNDING_OBJECT
         physics USE EPUCK_WHEEL_PHYSICS
-        linearVelocity -1.0277077877549609e-17 4.291984851998209e-17 1.1930243930942935e-16
-        angularVelocity -1.5627574843944235e-19 -4.658903682035108e-20 -3.4738101350190426e-15
+        linearVelocity -1.6863266396941477e-17 -9.95591636052713e-19 8.604832161914082e-17
+        angularVelocity 1.1013119029218863e-17 6.104063331133792e-18 -3.56848924515545e-15
       }
     }
     DEF BATTERY_CONNECTOR Pose {
@@ -1125,6 +1132,10 @@ Robot {
   }
   controller "<extern>"
   cpuConsumption 1.11
-  linearVelocity 2.7000898345332684e-18 -1.5575560192052806e-18 -5.420054851205098e-17
-  angularVelocity -7.326881796515181e-19 -1.7108228063537485e-19 7.887923048611697e-19
+  linearVelocity 3.8424091788594254e-20 -3.038990993686082e-20 -5.228042498262272e-19
+  angularVelocity -2.185057513614918e-18 8.769196362751614e-19 -1.1133001008555569e-20
+}
+Ball {
+  translation 0 0.2 0.1
+  radius 0.07
 }
