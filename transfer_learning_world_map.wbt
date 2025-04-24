@@ -13,19 +13,19 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/project
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/obstacles/protos/OilBarrel.proto"
 
 WorldInfo {
-  gravity 0
+  gravity 9.8
   basicTimeStep 16
 }
 Viewpoint {
-  orientation -0.31120925087111345 0.744320557299409 0.590877068563113 1.2316423138432162
-  position -3.190048663067496 -3.2285357455979695 6.732912740554799
+  orientation -0.13855582588760026 0.9672972163317379 0.21245794499024018 1.1864268276301682
+  position -1.8006517016857635 -0.4634941409063098 5.2161678043009
 }
 TexturedBackground {
 }
 TexturedBackgroundLight {
 }
 DEF rectangle_arena RectangleArena {
-  rotation -6.287189999981451e-07 -2.346409999993077e-06 0.9999999999970497 -2.6179953071795863
+  rotation 0 0 1 1.57
   floorTileSize 0.25 0.25
   floorAppearance Parquetry {
     colorOverride 0 0 0
@@ -37,19 +37,20 @@ DEF rectangle_arena RectangleArena {
     IBLStrength 100
   }
 }
-
 OilBarrel {
-  translation 0 -0.24 0.1
+  translation 0.1 -0.1 0.5
   height 0.2
   radius 0.07
+  physics Physics {
+  }
 }
 Robot {
-  translation -0.014640899999999991 0.0153972 0.00864868999999957
+  translation 0 0 -2
   rotation 0.006452327955072892 -0.0011467746768770947 -0.999978525955333 0.52341757345616
   children [
     MultiSenseS21 {
-      translation -0.0599945 -9.66254e-06 2.07
-      rotation 0.25056406820530264 0.9351132545444084 -0.250561068204486 1.63784
+      translation 0 0 4
+      rotation 0 1 0 1.57
       metaCamera TRUE
     }
     TouchSensor {
@@ -92,7 +93,7 @@ Robot {
       ]
       endPoint DEF EPUCK_LEFT_WHEEL Solid {
         translation -6.938893903907228e-18 0.02599999999999999 0.02000000000000189
-        rotation -3.2713594921581768e-06 -0.9999999978179321 6.598055906813661e-05 1.7346325985505289e-12
+        rotation 0 1 0 0
         children [
           DEF EPUCK_WHEEL Pose {
             rotation 1 0 0 -1.570796
@@ -224,8 +225,6 @@ Robot {
           density -1
           mass 0.005
         }
-        linearVelocity -3.122826271171887e-17 1.2918899847541734e-17 2.3695987688910666e-15
-        angularVelocity -2.750407041422712e-17 9.780837652891716e-18 1.2890347144306009e-15
       }
     }
     HingeJoint {
@@ -247,7 +246,7 @@ Robot {
       ]
       endPoint DEF EPUCK_RIGHT_WHEEL Solid {
         translation 6.938893903907228e-18 -0.025999999999999985 0.02000000000000309
-        rotation -1.3561377472540267e-06 0.9999999503198777 -0.00031521167976343605 2.1706012767508776e-12
+        rotation 0 1 0 0
         children [
           Pose {
             rotation 1 0 0 3.14159
@@ -259,8 +258,6 @@ Robot {
         name "right wheel"
         boundingObject USE EPUCK_WHEEL_BOUNDING_OBJECT
         physics USE EPUCK_WHEEL_PHYSICS
-        linearVelocity -6.692325361645822e-17 3.351571491632229e-17 2.3703067181858383e-15
-        angularVelocity 6.2376616280074236e-18 7.844532923577867e-18 -2.8740665417633025e-15
       }
     }
     DEF BATTERY_CONNECTOR Pose {
@@ -1120,24 +1117,11 @@ Robot {
       }
     ]
   }
-  physics Physics {
-    density -1
-    mass 0.15
-    centerOfMass [
-      0 0 0.015
-    ]
-    inertiaMatrix [
-      9.78585e-05 8.64333e-05 8.74869e-05
-      0 0 0
-    ]
-  }
   controller "<extern>"
   supervisor TRUE
   cpuConsumption 1.11
-  linearVelocity 3.358529291467066e-19 -1.711008637667518e-19 -1.4886154210665337e-17
-  angularVelocity -2.0297908658500133e-18 1.402001494475225e-18 5.188603706199102e-19
 }
 Ball {
-  translation 0 0.2 0.1
+  translation 0.05 0.1 0.5
   radius 0.07
 }
