@@ -16,8 +16,8 @@ WorldInfo {
   basicTimeStep 16
 }
 Viewpoint {
-  orientation -0.1911602409693909 0.861726115025491 0.46998496247816124 0.8820144979814523
-  position -2.8533478651389306 -1.4525326999545818 3.931841661963937
+  orientation -0.24919025778875079 0.8932611510350312 0.37415068017410735 1.2813700449771506
+  position -1.4947922531567008 -1.1181389521351854 6.256757387862749
 }
 TexturedBackground {
 }
@@ -37,32 +37,16 @@ DEF rectangle_arena RectangleArena {
   }
 }
 DEF OIL_BARREL OilBarrel {
-  hidden linearVelocity_0 7.569205685185533e-18 3.7821888841088736e-17 -6.249580482966443e-09
-  hidden angularVelocity_0 -5.073485437900701e-16 -1.394467134575405e-16 -2.5095056194491735e-18
-  translation 0.10000000000000007 -0.10000000000000006 0.09939656327696561
-  rotation -0.046300056993466746 -0.021184603012603147 -0.9987029174472257 1.8972934859344954e-16
+  translation -0.37025764407536227 -0.010914667035319285 0.09939656311435284
+  rotation 7.004865426987335e-09 3.780031222104243e-08 0.9999999999999993 0.008120927117943771
   height 0.2
   radius 0.07
   physics Physics {
   }
 }
-DEF SPHERE Sphere {
-  translation 0 -0.2 0.1
-  radius 0.1
-  subdivision 2
-  appearance PBRAppearance {
-    baseColor 1 0.54 0.08
-    metalness 0
-    roughness 0.8
-  }
-  name "ball"
-  physics Physics {
-  }
-
-}
 Robot {
-  translation -6.052164992955399e-13 -3.492756958026757e-13 -2
-  rotation 0.006452327955072892 -0.0011467746768770947 -0.999978525955333 0.523417573883259
+  translation 2.2433295313513254e-13 -1.854374989514008e-13 -2
+  rotation 0 0 1 -4.26940362127609e-10
   children [
     DEF detectionCamera Camera {
       translation 0 0 4
@@ -79,10 +63,8 @@ Robot {
       }
     }
     MultiSenseS21 {
-      hidden linearVelocity_0 0 0 -0.00014699999999999132
-      hidden angularVelocity_0 -3.9463631507970366e-16 -6.011430385809783e-17 1.0856253143274766e-16
-      translation 2.574499087400293e-06 -2.992869572845166e-05 3.9911419519732556
-      rotation -2.1492890599363738e-10 1 2.1234034130058122e-10 1.570000000000495
+      translation -4.25488447312999e-06 -0.00012719812659402245 3.9329152041770232
+      rotation 7.273927841444035e-10 1 5.152626998888995e-09 1.5700000018868658
       metaCamera TRUE
     }
     TouchSensor {
@@ -108,7 +90,7 @@ Robot {
     }
     HingeJoint {
       jointParameters HingeJointParameters {
-        position -1.2129129250152547e-09
+        position -1.0083871935445861e-09
         axis 0 1 0
         anchor 0 0 0.02
       }
@@ -124,7 +106,7 @@ Robot {
         }
       ]
       endPoint DEF EPUCK_LEFT_WHEEL Solid {
-        translation -6.938894783471986e-18 0.02599999999999999 0.02000000000000189
+        translation -6.938894396744797e-18 0.02599999999999999 0.02000000000000189
         rotation 0 1 0 0
         children [
           DEF EPUCK_WHEEL Pose {
@@ -257,13 +239,11 @@ Robot {
           density -1
           mass 0.005
         }
-        linearVelocity 5.492382329351837e-13 9.54439697870424e-13 -4.903312358583997e-07
-        angularVelocity -1.055080684621862e-08 7.205668859721582e-09 3.268266944403061e-12
       }
     }
     HingeJoint {
       jointParameters HingeJointParameters {
-        position -1.0084329871540436e-09
+        position -1.2129188255038655e-09
         axis 0 1 0
         anchor 0 0 0.02
       }
@@ -279,7 +259,7 @@ Robot {
         }
       ]
       endPoint DEF EPUCK_RIGHT_WHEEL Solid {
-        translation 6.938893098173147e-18 -0.025999999999999985 0.02000000000000309
+        translation 6.93889246605073e-18 -0.025999999999999985 0.02000000000000309
         rotation 0 1 0 0
         children [
           Pose {
@@ -292,8 +272,6 @@ Robot {
         name "right wheel"
         boundingObject USE EPUCK_WHEEL_BOUNDING_OBJECT
         physics USE EPUCK_WHEEL_PHYSICS
-        linearVelocity 5.671682090092346e-13 9.855476442742631e-13 -4.903312365467372e-07
-        angularVelocity 1.1517845338187914e-08 -5.529996844276688e-09 3.2669304385910984e-12
       }
     }
     DEF BATTERY_CONNECTOR Pose {
@@ -1158,12 +1136,13 @@ Robot {
   cpuConsumption 1.11
 }
 DEF Ball Solid {
-  translation 0.05 0.3 -41.225728777579185
-  rotation 0.1294260267790243 -0.1294260267790243 -0.9831062034105932 1.5878353071795863
+  translation -0.1253934200303297 0.03479704192765305 0.09922905679106425
+  rotation 0.7501228534576218 0.1844502586711653 -0.6350541762690294 0.17703782600928283
   children [
     Shape {
       appearance Appearance {
         material Material {
+          diffuseColor 1 0.5 0.2
         }
         texture ImageTexture {
         }
@@ -1175,5 +1154,21 @@ DEF Ball Solid {
   ]
   name "ball solid"
   model "ball solid"
-  linearVelocity 0 0 -28.380800000000054
+  boundingObject Sphere {
+    radius 0.1
+  }
+  physics Physics {
+    mass 1
+    centerOfMass [
+      0 0 0
+    ]
+    inertiaMatrix [
+      1 1 1
+      0 0 0
+    ]
+  }
+  locked TRUE
+  recognitionColors [
+    0 0 0
+  ]
 }

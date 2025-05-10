@@ -1,7 +1,8 @@
-from controller import Robot, CameraRecognitionObject
+from controller import Robot, CameraRecognitionObject, Supervisor
 import cv2
 import numpy as np
 import os
+
 
 # --- Configurações ---
 SAVE_DIR_IMAGES = "dataset/images"
@@ -11,23 +12,25 @@ ANNOTATION_FILENAME_PREFIX = "frame" # Nome base para imagens e anotações
 # Mapeamento: Nome do MODELO do objeto no Webots -> ID da classe YOLO (começando em 0)
 
 CLASS_MAPPING = {
-    "cube": 0,
+    "ball solid": 0,
     "oil barrel": 1,
 }
 
 # ------------ Initialization ------------
-robot = Robot()
-timestep = int(robot.getBasicTimeStep())
+supervisor = Supervisor()
+timestep = int(supervisor.getBasicTimeStep())
 
 # ------------ Devices -------------
-# 1. camera - used to capture the images of the world
-camera = robot.getDevice("MultiSense S21 left camera")
-if camera is None:
-    print("Error: Camera 'MultiSense S21 left camera' not found.")
+camera = supervisor.getDevice("MultiSense S21 left camera")
+detection_camera = supervisor.getDevice("detectionCamera")
+
+if detection_camera is None:
+    print("Error: Detection camera 'detectionCamera' not found")
     exit()
 
 camera.enable(timestep)
-camera.recognitionEnable(timestep)
+detection_camera.enable(timestep)
+detection_camera.recognitionEnable(timestep)
 
 
 # Devices dimensions
@@ -37,8 +40,11 @@ if width_saving == 0 or height_saving == 0:
     print("Error: Invalid camera dimensions - either height or width is equal to 0.")
     exit()
 
-width_detection = width_saving
-height_detection = height_saving
+width_detection = detection_camera.getWidth()
+height_detection = detection_camera.getHeight()
+if width_detection == 0 or height_detection == 0:
+    print("Error: Invalid detection camera dimensions - either height or width is equal to 0.")
+    exit()
 
 # Create output directories (if they don't exist)
 os.makedirs(SAVE_DIR_IMAGES, exist_ok=True)
@@ -50,8 +56,39 @@ img_counter = 0
 
 print("Main loop initializing. To quit, press 'q'")
 
+# Faixas para posição aleatória (x, y, z)
+x_range = (-0.5, 0.5)
+y_range = (-0.5, 0.5)
+z_range = (0, 3.5)
+
+#Cilindro
+target1 = supervisor.getFromDef("OIL_BARREL")  # nome do DEF do novo objeto
+target1_rotation = target1.getField("rotation")
+target1_translation = target1.getField("translation")
+
+#Ball
+target2 = supervisor.getFromDef("Ball")  # nome do DEF do novo objeto
+target2_rotation = target2.getField("rotation")
+target2_translation = target2.getField("translation")
+
 # --- Main Loop ---
-while robot.step(timestep) != -1:
+while supervisor.step(timestep) != -1:
+
+    # Gerar posição aleatória
+    pos1 = [np.random.uniform(*x_range), np.random.uniform(*y_range), np.random.uniform(*z_range)]
+    pos2 = [np.random.uniform(*x_range), np.random.uniform(*y_range), np.random.uniform(*z_range)]
+    target1_translation.setSFVec3f(pos1)
+    target2_translation.setSFVec3f(pos2)
+
+    # Aplicar rotação aleatória
+    angle = np.random.uniform(0, 3.14)
+    target1_rotation.setSFRotation([0, 1, 0, angle])
+    target2_rotation.setSFRotation([0, 1, 0, angle])
+
+    # Esperar que o objeto caia
+    for _ in range(int(3000 / timestep)):
+        supervisor.step(timestep)
+
     # 1. Capture Image to Save
     image_raw_saving = camera.getImage()
     if image_raw_saving is None:
@@ -63,11 +100,20 @@ while robot.step(timestep) != -1:
     bgr_img_saving = cv2.cvtColor(img_np, cv2.COLOR_RGBA2BGR)
 
     # 2. Capture the image from Detection Camera - annotations
-    image_raw_detection = image_raw_saving
-    bgr_img_detection_viz = bgr_img_saving.copy()
+    image_raw_detection = detection_camera.getImage()
+    if image_raw_detection is None:
+        print("Warning: Fail to capture an image from detection camera.")
+        bgr_img_detection_viz = np.zeros((height_detection, width_detection, 3),
+                                         dtype=np.uint8)  # Black image in case of failure
+
+    else: # Convert the image to OpenCV format
+        img_np_detection = np.frombuffer(image_raw_detection, np.uint8).reshape((height_detection, width_detection, 4)) # RGBA
+        bgr_img_detection_viz = cv2.cvtColor(img_np_detection, cv2.COLOR_RGBA2BGR)  # Image to draw the Bounding Boxes
+
+
 
     # 3. Obtain recognized objects by the Detection Camera
-    recognized_objects = camera.getRecognitionObjects()
+    recognized_objects = detection_camera.getRecognitionObjects()
     print(f"DEBUG [Frame {img_counter}]: Number of rec objs = {len(recognized_objects)}")
 
     yolo_annotations = []

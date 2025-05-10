@@ -43,6 +43,7 @@ Robot {
       translation 1.9879128558401328e-07 -2.310871572433308e-06 3.9993160440971947
       rotation 1.052326030960838e-16 1 3.0351717660523705e-15 1.5699999999999992
       metaCamera TRUE
+      metaRangeFinder TRUE
     }
     TouchSensor {
       translation 0 0 0.04
