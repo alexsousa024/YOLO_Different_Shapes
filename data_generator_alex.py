@@ -21,7 +21,7 @@ x_range = (-0.5, 0.5)
 y_range = (-0.5, 0.5)
 z_range = (0, 3.5)
 
-target1 = supervisor.getFromDef("SOLID")  # nome do DEF do novo objeto
+target1 = supervisor.getFromDef("CUBE")  # nome do DEF do novo objeto
 target1_rotation = target1.getField("rotation")
 target1_translation = target1.getField("translation")
 
