@@ -14,6 +14,7 @@ ANNOTATION_FILENAME_PREFIX = "frame" # Nome base para imagens e anotações
 CLASS_MAPPING = {
     "ball solid": 0,
     "oil barrel": 1,
+    "cone":2,
 }
 
 # ------------ Initialization ------------
@@ -59,7 +60,7 @@ print("Main loop initializing. To quit, press 'q'")
 # Faixas para posição aleatória (x, y, z)
 x_range = (-0.5, 0.5)
 y_range = (-0.5, 0.5)
-z_range = (0, 3.5)
+z_range = (0, 2.0)
 
 #Cilindro
 target1 = supervisor.getFromDef("OIL_BARREL")  # nome do DEF do novo objeto
@@ -71,19 +72,27 @@ target2 = supervisor.getFromDef("Ball")  # nome do DEF do novo objeto
 target2_rotation = target2.getField("rotation")
 target2_translation = target2.getField("translation")
 
+#Ball
+target3 = supervisor.getFromDef("CONE")  # nome do DEF do novo objeto
+target3_rotation = target3.getField("rotation")
+target3_translation = target3.getField("translation")
+
 # --- Main Loop ---
 while supervisor.step(timestep) != -1:
 
     # Gerar posição aleatória
     pos1 = [np.random.uniform(*x_range), np.random.uniform(*y_range), np.random.uniform(*z_range)]
     pos2 = [np.random.uniform(*x_range), np.random.uniform(*y_range), np.random.uniform(*z_range)]
+    pos3 = [np.random.uniform(*x_range), np.random.uniform(*y_range), np.random.uniform(*z_range)]
     target1_translation.setSFVec3f(pos1)
     target2_translation.setSFVec3f(pos2)
+    target3_translation.setSFVec3f(pos3)
 
     # Aplicar rotação aleatória
     angle = np.random.uniform(0, 3.14)
     target1_rotation.setSFRotation([0, 1, 0, angle])
     target2_rotation.setSFRotation([0, 1, 0, angle])
+    target3_rotation.setSFRotation([0, 1, 0, angle])
 
     # Esperar que o objeto caia
     for _ in range(int(3000 / timestep)):
@@ -124,6 +133,7 @@ while supervisor.step(timestep) != -1:
         position = obj.position_on_image
         size = obj.size_on_image
         model_name = obj.getModel()
+        print(model_name)
         if model_name:
             pass
         else:

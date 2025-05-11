@@ -16,8 +16,8 @@ WorldInfo {
   basicTimeStep 16
 }
 Viewpoint {
-  orientation -0.24919025778875079 0.8932611510350312 0.37415068017410735 1.2813700449771506
-  position -1.4947922531567008 -1.1181389521351854 6.256757387862749
+  orientation -0.2701291005313196 0.7930368495527382 0.54600624932102 1.1155547487115376
+  position -2.825308055581608 -2.9926640162632716 5.47724274076557
 }
 TexturedBackground {
 }
@@ -37,16 +37,18 @@ DEF rectangle_arena RectangleArena {
   }
 }
 DEF OIL_BARREL OilBarrel {
-  translation -0.37025764407536227 -0.010914667035319285 0.09939656311435284
-  rotation 7.004865426987335e-09 3.780031222104243e-08 0.9999999999999993 0.008120927117943771
+  hidden linearVelocity_0 -0.11683678715158496 1.446457865255818 -0.4934402177241436
+  hidden angularVelocity_0 -12.256263388619223 -0.8016277089817643 -0.9182125040534077
+  translation 0.2920066920419425 -0.01997909883989608 0.22728298970368396
+  rotation -0.07081212164884566 -0.27705906843453754 -0.9582400096143842 1.8383473427631165
   height 0.2
   radius 0.07
   physics Physics {
   }
 }
 Robot {
-  translation 2.2433295313513254e-13 -1.854374989514008e-13 -2
-  rotation 0 0 1 -4.26940362127609e-10
+  translation 2.555592959981838e-13 -1.8543749897778527e-13 -2
+  rotation 0 0 1 -8.535505472263996e-10
   children [
     DEF detectionCamera Camera {
       translation 0 0 4
@@ -63,8 +65,10 @@ Robot {
       }
     }
     MultiSenseS21 {
-      translation -4.25488447312999e-06 -0.00012719812659402245 3.9329152041770232
-      rotation 7.273927841444035e-10 1 5.152626998888995e-09 1.5700000018868658
+      hidden linearVelocity_0 0 0 -0.00014699999999997238
+      hidden angularVelocity_0 -2.3433279259393267e-22 4.507822169046151e-16 -3.7226517754809604e-22
+      translation -8.230267830535935e-06 -0.00013381981425803792 3.930102238525316
+      rotation -1.0731096452857564e-06 0.9999999999993162 -4.645772284459482e-07 1.5699999934454978
       metaCamera TRUE
     }
     TouchSensor {
@@ -90,7 +94,7 @@ Robot {
     }
     HingeJoint {
       jointParameters HingeJointParameters {
-        position -1.0083871935445861e-09
+        position -9.06124773374756e-10
         axis 0 1 0
         anchor 0 0 0.02
       }
@@ -106,7 +110,7 @@ Robot {
         }
       ]
       endPoint DEF EPUCK_LEFT_WHEEL Solid {
-        translation -6.938894396744797e-18 0.02599999999999999 0.02000000000000189
+        translation -6.938894203382044e-18 0.02599999999999999 0.02000000000000189
         rotation 0 1 0 0
         children [
           DEF EPUCK_WHEEL Pose {
@@ -239,11 +243,13 @@ Robot {
           density -1
           mass 0.005
         }
+        linearVelocity -9.526549357838999e-15 -1.18707417490125e-13 -4.903312400106336e-07
+        angularVelocity -1.2740007608180672e-08 1.0223167497642486e-09 -1.5543761491751016e-21
       }
     }
     HingeJoint {
       jointParameters HingeJointParameters {
-        position -1.2129188255038655e-09
+        position -1.315164642994483e-09
         axis 0 1 0
         anchor 0 0 0.02
       }
@@ -259,7 +265,7 @@ Robot {
         }
       ]
       endPoint DEF EPUCK_RIGHT_WHEEL Solid {
-        translation 6.93889246605073e-18 -0.025999999999999985 0.02000000000000309
+        translation 6.938892149980562e-18 -0.025999999999999985 0.02000000000000309
         rotation 0 1 0 0
         children [
           Pose {
@@ -272,6 +278,8 @@ Robot {
         name "right wheel"
         boundingObject USE EPUCK_WHEEL_BOUNDING_OBJECT
         physics USE EPUCK_WHEEL_PHYSICS
+        linearVelocity 9.528107790541376e-15 1.187317261764453e-13 -4.903312396775663e-07
+        angularVelocity 1.2740000855253078e-08 -1.0224839871092388e-09 -1.5459009084396942e-21
       }
     }
     DEF BATTERY_CONNECTOR Pose {
@@ -1136,8 +1144,8 @@ Robot {
   cpuConsumption 1.11
 }
 DEF Ball Solid {
-  translation -0.1253934200303297 0.03479704192765305 0.09922905679106425
-  rotation 0.7501228534576218 0.1844502586711653 -0.6350541762690294 0.17703782600928283
+  translation 0.2776305503720681 0.3884471612265734 0.09921599069787548
+  rotation -0.025691039767290258 0.9994220075570296 -0.022262553455351986 2.360872870881202
   children [
     Shape {
       appearance Appearance {
@@ -1171,4 +1179,45 @@ DEF Ball Solid {
   recognitionColors [
     0 0 0
   ]
+  linearVelocity 0.007590873918072201 0.005986898021291671 1.483010979195349e-07
+  angularVelocity -0.0598689802129167 0.07590873918072201 0.027307720484354394
+}
+DEF CONE Solid {
+  translation -0.06661819503905451 0.24879011775070503 0.20666772755383403
+  rotation 0.004016533956819593 0.9997375053897858 -0.02255632443422239 2.5082661513719167
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 1 0.3 0.2
+        }
+      }
+      geometry Cone {
+        bottomRadius 0.1
+        height 0.2
+      }
+    }
+  ]
+  model "cone"
+  boundingObject Shape {
+    geometry Box {
+      size 0.18 0.18 0.2
+    }
+  }
+  physics Physics {
+    mass 1
+    centerOfMass [
+      0 0 0
+    ]
+    inertiaMatrix [
+      1 1 1
+      0 0 0
+    ]
+  }
+  locked TRUE
+  recognitionColors [
+    0 0 0
+  ]
+  linearVelocity 0.08262927448096062 -0.008153942478975915 0.20730657906773628
+  angularVelocity 0.06020859624191621 0.5526543183869526 0.06814257830193995
 }
