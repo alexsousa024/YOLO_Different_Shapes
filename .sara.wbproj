@@ -7,8 +7,8 @@ centralWidgetVisible: 1
 orthographicViewHeight: 1
 textFiles: -1
 consoles: Console:All:All
-renderingDevicePerspectives: e-puck:MultiSense S21 left camera;1;0.199436;0.731481;0.0344288
-renderingDevicePerspectives: e-puck:MultiSense S21 meta camera;1;0.183824;0.0703704;0.197183
-renderingDevicePerspectives: e-puck:MultiSense S21 right camera;1;0.141602;0.0703704;0.0234742
+renderingDevicePerspectives: e-puck:MultiSense S21 left camera;1;0.199436;0.689815;0.00878778
+renderingDevicePerspectives: e-puck:MultiSense S21 meta camera;1;0.183824;0.00185185;0.003663
+renderingDevicePerspectives: e-puck:MultiSense S21 right camera;1;0.141602;0.00833334;0.0088222
 renderingDevicePerspectives: e-puck:camera;1;1;0;0
-renderingDevicePerspectives: e-puck:detectionCamera;1;1;0.787038;0.236307
+renderingDevicePerspectives: e-puck:detectionCamera;1;1;0.731483;0.305904

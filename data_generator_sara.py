@@ -13,7 +13,7 @@ ANNOTATION_FILENAME_PREFIX = "frame" # Nome base para imagens e anotações
 
 CLASS_MAPPING = {
     "ball solid": 0,
-    "oil barrel": 1,
+    "cylinder": 1,
     "cone":2,
 }
 
@@ -63,7 +63,7 @@ y_range = (-0.5, 0.5)
 z_range = (0, 2.0)
 
 #Cilindro
-target1 = supervisor.getFromDef("OIL_BARREL")  # nome do DEF do novo objeto
+target1 = supervisor.getFromDef("Cylinder")  # nome do DEF do novo objeto
 target1_rotation = target1.getField("rotation")
 target1_translation = target1.getField("translation")
 
