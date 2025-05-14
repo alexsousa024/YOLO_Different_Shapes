@@ -2,6 +2,7 @@ import os
 import shutil
 import yaml
 from sklearn.model_selection import KFold
+from sklearn.model_selection import train_test_split
 from ultralytics import YOLO
 
 # Parâmetros
@@ -14,11 +15,14 @@ k_folds = 5
 images = [f for f in os.listdir(dataset_path) if f.endswith(img_ext)]
 images.sort()
 
+# Separar em treino e teste (80/20)
+train_images, test_images = train_test_split(images, test_size=0.2, random_state=42)
+
 # K-Fold split
 kf = KFold(n_splits=k_folds, shuffle=True, random_state=42)
 fold_metrics = []
 
-for fold, (train_idx, val_idx) in enumerate(kf.split(images)):
+for fold, (train_idx, val_idx) in enumerate(kf.split(train_images)):
     print(f"\n🔁 Fold {fold + 1}/{k_folds}")
 
     # Criar estrutura temporária para treino/validação
@@ -28,18 +32,26 @@ for fold, (train_idx, val_idx) in enumerate(kf.split(images)):
     train_lbl_dir = os.path.join(split_dir, 'labels/train')
     val_lbl_dir = os.path.join(split_dir, 'labels/val')
 
+
+
     os.makedirs(train_img_dir, exist_ok=True)
     os.makedirs(val_img_dir, exist_ok=True)
     os.makedirs(train_lbl_dir, exist_ok=True)
     os.makedirs(val_lbl_dir, exist_ok=True)
+
+
+
+
+
 
     # Copiar imagens e labels para as pastas corretas
     for idxs, img_dir, lbl_dir in [
         (train_idx, train_img_dir, train_lbl_dir),
         (val_idx, val_img_dir, val_lbl_dir),
     ]:
+
         for i in idxs:
-            img_file = images[i]
+            img_file = train_images[i]
             base_name = os.path.splitext(img_file)[0]
             shutil.copy(os.path.join(dataset_path, img_file), os.path.join(img_dir, img_file))
             shutil.copy(os.path.join(labels_path, base_name + '.txt'), os.path.join(lbl_dir, base_name + '.txt'))
@@ -56,7 +68,7 @@ for fold, (train_idx, val_idx) in enumerate(kf.split(images)):
 
     # Treinar o modelo
     model = YOLO('yolov8n.pt')
-    model.train(data=fold_yaml, epochs=50, imgsz=640, batch=16, name=f'yolov8_fold{fold}', classes = 3)
+    model.train(data=fold_yaml, epochs=10, imgsz=640, batch=16, name=f'yolov8_fold{fold}')
 
     # Avaliar o modelo
     metrics = model.val()
@@ -68,6 +80,17 @@ for fold, (train_idx, val_idx) in enumerate(kf.split(images)):
         'map50': metrics.box.map50,
         'map': metrics.box.map,
     })
+
+# Criar diretório para teste e copiar imagens e labels
+test_img_dir = 'splits/test/images'
+test_lbl_dir = 'splits/test/labels'
+os.makedirs(test_img_dir, exist_ok=True)
+os.makedirs(test_lbl_dir, exist_ok=True)
+
+for img_file in test_images:
+    base_name = os.path.splitext(img_file)[0]
+    shutil.copy(os.path.join(dataset_path, img_file), os.path.join(test_img_dir, img_file))
+    shutil.copy(os.path.join(labels_path, base_name + '.txt'), os.path.join(test_lbl_dir, base_name + '.txt'))
 
 # Média das métricas
 print("\n📊 Resultados Médios dos Folds:")
