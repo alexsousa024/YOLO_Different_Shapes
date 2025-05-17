@@ -1,9 +1,0 @@
-names:
-- sphere
-- cone
-- cylinder
-nc: 3
-train: "/Users/alexandresousa/Desktop/Introduc\u0327a\u0303o a\u0300 Robo\u0301tica\
-  \ Inteligente/Trabalho Pra\u0301tico/splits/fold0/images/train"
-val: "/Users/alexandresousa/Desktop/Introduc\u0327a\u0303o a\u0300 Robo\u0301tica\
-  \ Inteligente/Trabalho Pra\u0301tico/splits/fold0/images/val"
