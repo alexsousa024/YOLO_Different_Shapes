@@ -8,15 +8,14 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/solids/protos/SolidPipe.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/Parquetry.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/BrushedAluminium.proto"
-EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/devices/multisense/protos/MultiSenseS21.proto"
 
 WorldInfo {
   gravity 9.8
   basicTimeStep 16
 }
 Viewpoint {
-  orientation -0.28734285376241914 0.5824535945163 0.7603827290428883 1.1510637451814563
-  position -2.124571472446611 -3.432104898997144 4.362469065148426
+  orientation 0.08502977014770076 0.9782700579069548 -0.189096885197384 0.8616674562770126
+  position -2.4931605066061238 0.387162205543257 3.323434977841732
 }
 TexturedBackground {
 }
@@ -36,27 +35,31 @@ DEF rectangle_arena RectangleArena {
   }
 }
 Robot {
-  translation 2.555592959981838e-13 -1.8543749897778527e-13 -2
-  rotation 0 0 1 -8.535505472263996e-10
+  translation 5.579882613672101e-13 -1.8543749946918838e-13 -2
+  rotation 0 0 1 -1.7245070567054482e-09
   children [
-    DEF detectionCamera Camera {
-      translation 0 0 4
+    Camera {
+      translation 0 0 5
       rotation 0 1 0 1.57
-      name "detectionCamera"
-      recognitionColors [
-        0 0 0
+      children [
+        Shape {
+          appearance Appearance {
+            material Material {
+              diffuseColor 0.5 0.6 0.2
+            }
+          }
+          geometry Box {
+            size 0.1 0.1 0.1
+          }
+        }
       ]
-      fieldOfView 1.4
-      width 152
-      height 114
-      recognition DEF recognizer Recognition {
-        occlusion 0
+      name "camera(1)"
+      width 1920
+      height 1080
+      lens Lens {
       }
-    }
-    MultiSenseS21 {
-      translation -8.230267830535935e-06 -0.00013381981425803792 3.930102238525316
-      rotation -1.0731096452857564e-06 0.9999999999993162 -4.645772284459482e-07 1.5699999934454978
-      metaCamera TRUE
+      recognition Recognition {
+      }
     }
     TouchSensor {
       translation 0 0 0.04
@@ -81,7 +84,7 @@ Robot {
     }
     HingeJoint {
       jointParameters HingeJointParameters {
-        position -9.06124773374756e-10
+        position -1.11060848111778e-09
         axis 0 1 0
         anchor 0 0 0.02
       }
@@ -97,7 +100,7 @@ Robot {
         }
       ]
       endPoint DEF EPUCK_LEFT_WHEEL Solid {
-        translation -6.938894203382044e-18 0.02599999999999999 0.02000000000000189
+        translation -6.938894590029775e-18 0.02599999999999999 0.02000000000000189
         rotation 0 1 0 0
         children [
           DEF EPUCK_WHEEL Pose {
@@ -234,7 +237,7 @@ Robot {
     }
     HingeJoint {
       jointParameters HingeJointParameters {
-        position -1.315164642994483e-09
+        position -1.1106374998103885e-09
         axis 0 1 0
         anchor 0 0 0.02
       }
@@ -250,7 +253,7 @@ Robot {
         }
       ]
       endPoint DEF EPUCK_RIGHT_WHEEL Solid {
-        translation 6.938892149980562e-18 -0.025999999999999985 0.02000000000000309
+        translation 6.9388927822306635e-18 -0.025999999999999985 0.02000000000000309
         rotation 0 1 0 0
         children [
           Pose {
@@ -1127,8 +1130,8 @@ Robot {
   cpuConsumption 1.11
 }
 DEF Ball Solid {
-  translation 0.2776305503720681 0.3884471612265734 0.09921599069787548
-  rotation -0.025691039767290258 0.9994220075570296 -0.022262553455351986 2.360872870881202
+  translation 0.2572561291237997 -0.13871530807733318 0.6699533934997384
+  rotation 0.004111868483447898 0.9999914504706041 0.0004376337188444418 2.4460425110441744
   children [
     Shape {
       appearance Appearance {
@@ -1164,8 +1167,8 @@ DEF Ball Solid {
   ]
 }
 DEF CONE Solid {
-  translation -0.06661819503905451 0.24879011775070503 0.20666772755383403
-  rotation 0.004016533956819593 0.9997375053897858 -0.02255632443422239 2.5082661513719167
+  translation 0.2624897223489424 -0.3787068007362395 0.16035514601146839
+  rotation 0.005998273815399478 0.9997741942327047 0.020385810201738463 2.4284301070580256
   children [
     Shape {
       appearance Appearance {
@@ -1201,7 +1204,8 @@ DEF CONE Solid {
   ]
 }
 DEF Cylinder Solid {
-  translation 0 0 0.13
+  translation -0.2559115910383117 0.12799342833678617 0.19372161178354239
+  rotation 0.021893192404719958 0.9968755264562885 0.07589382635516204 2.438333585279146
   children [
     Shape {
       appearance Appearance {

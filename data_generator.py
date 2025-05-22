@@ -23,18 +23,10 @@ supervisor = Supervisor()
 timestep = int(supervisor.getBasicTimeStep())
 
 # ------------ Devices -------------
-camera = supervisor.getDevice("MultiSense S21 left camera")
-detection_camera = supervisor.getDevice("detectionCamera")
-
-if detection_camera is None:
-    print("Error: Detection camera 'detectionCamera' not found")
-    exit()
+camera = supervisor.getDevice("camera(1)")
 
 camera.enable(timestep)
-detection_camera.enable(timestep)
-detection_camera.recognitionEnable(timestep)
-
-
+camera.recognitionEnable(timestep)
 # Devices dimensions
 width_saving = camera.getWidth()
 height_saving = camera.getHeight()
@@ -42,8 +34,8 @@ if width_saving == 0 or height_saving == 0:
     print("Error: Invalid camera dimensions - either height or width is equal to 0.")
     exit()
 
-width_detection = detection_camera.getWidth()
-height_detection = detection_camera.getHeight()
+width_detection = camera.getWidth()
+height_detection = camera.getHeight()
 if width_detection == 0 or height_detection == 0:
     print("Error: Invalid detection camera dimensions - either height or width is equal to 0.")
     exit()
@@ -59,9 +51,12 @@ img_counter = 0
 print("Main loop initializing. To quit, press 'q'")
 
 # Faixas para posição aleatória (x, y, z)
-x_range = (-0.5, 0.5)
-y_range = (-0.5, 0.5)
-z_range = (0, 2.0)
+x_range = (-0.4, 0.4)
+y_range = (-0.4, 0.4)
+z_range = (0, 1.2)
+
+#Mudar o peso para que os objetos não caiam tanto
+
 
 #Cilindro
 target1 = supervisor.getFromDef("Cylinder")  # nome do DEF do novo objeto
@@ -77,7 +72,7 @@ target2_translation = target2.getField("translation")
 target3 = supervisor.getFromDef("CONE")  # nome do DEF do novo objeto
 target3_rotation = target3.getField("rotation")
 target3_translation = target3.getField("translation")
-
+"""
 #Ball
 target4 = supervisor.getFromDef("CUBE")  # nome do DEF do novo objeto
 target4_rotation = target4.getField("rotation")
@@ -102,40 +97,71 @@ target7_translation = target7.getField("translation")
 target8 = supervisor.getFromDef("Cylinder2")  # nome do DEF do novo objeto
 target8_rotation = target8.getField("rotation")
 target8_translation = target8.getField("translation")
+"""
 # --- Main Loop ---
 while supervisor.step(timestep) != -1:
+
+    camera_node = supervisor.getFromDef("MULTISENSOR")
+    if camera_node:
+        camera_translation_field = camera_node.getField("translation")
+        if camera_translation_field:
+            camera_translation_field.setSFVec3f([0.01, 0.01, 4])
 
     # Gerar posição aleatória
     pos1 = [np.random.uniform(*x_range), np.random.uniform(*y_range), np.random.uniform(*z_range)]
     pos2 = [np.random.uniform(*x_range), np.random.uniform(*y_range), np.random.uniform(*z_range)]
     pos3 = [np.random.uniform(*x_range), np.random.uniform(*y_range), np.random.uniform(*z_range)]
+    """
     pos4 = [np.random.uniform(*x_range), np.random.uniform(*y_range), np.random.uniform(*z_range)]
     pos5 = [np.random.uniform(*x_range), np.random.uniform(*y_range), np.random.uniform(*z_range)]
     pos6 = [np.random.uniform(*x_range), np.random.uniform(*y_range), np.random.uniform(*z_range)]
     pos7 = [np.random.uniform(*x_range), np.random.uniform(*y_range), np.random.uniform(*z_range)]
     pos8 = [np.random.uniform(*x_range), np.random.uniform(*y_range), np.random.uniform(*z_range)]
+    """
     target1_translation.setSFVec3f(pos1)
     target2_translation.setSFVec3f(pos2)
     target3_translation.setSFVec3f(pos3)
+    """
     target4_translation.setSFVec3f(pos4)
     target5_translation.setSFVec3f(pos5)
     target6_translation.setSFVec3f(pos6)
     target7_translation.setSFVec3f(pos7)
     target8_translation.setSFVec3f(pos8)
+    """
 
     # Aplicar rotação aleatória
     angle = np.random.uniform(0, 3.14)
     target1_rotation.setSFRotation([0, 1, 0, angle])
     target2_rotation.setSFRotation([0, 1, 0, angle])
     target3_rotation.setSFRotation([0, 1, 0, angle])
+    """
     target4_rotation.setSFRotation([0, 1, 0, angle])
     target5_rotation.setSFRotation([0, 1, 0, angle])
     target6_rotation.setSFRotation([0, 1, 0, angle])
     target7_rotation.setSFRotation([0, 1, 0, angle])
     target8_rotation.setSFRotation([0, 1, 0, angle])
+    """
 
-    # Esperar que o objeto caia
-    for _ in range(int(3000 / timestep)):
+    # Esperar até que todos os objetos estejam parados
+    # Função auxiliar para verificar se o objeto está praticamente parado
+    def is_object_stationary(object_node, threshold=0.05):
+        vel = object_node.getVelocity()
+        if vel is None:
+            return False
+        linear_velocity = vel[:3]
+        return np.linalg.norm(linear_velocity) < threshold
+
+    while True:
+        supervisor.step(timestep)
+        if all([
+            is_object_stationary(target1),
+            is_object_stationary(target2),
+            is_object_stationary(target3)
+        ]):
+            break
+
+    # Pequeno atraso antes de capturar a imagem
+    for _ in range(int(0.1 * 1000 / timestep)):
         supervisor.step(timestep)
 
     # 1. Capture Image to Save
@@ -149,7 +175,7 @@ while supervisor.step(timestep) != -1:
     bgr_img_saving = cv2.cvtColor(img_np, cv2.COLOR_RGBA2BGR)
 
     # 2. Capture the image from Detection Camera - annotations
-    image_raw_detection = detection_camera.getImage()
+    image_raw_detection = camera.getImage()
     if image_raw_detection is None:
         print("Warning: Fail to capture an image from detection camera.")
         bgr_img_detection_viz = np.zeros((height_detection, width_detection, 3),
@@ -162,7 +188,7 @@ while supervisor.step(timestep) != -1:
 
 
     # 3. Obtain recognized objects by the Detection Camera
-    recognized_objects = detection_camera.getRecognitionObjects()
+    recognized_objects = camera.getRecognitionObjects()
     print(f"DEBUG [Frame {img_counter}]: Number of rec objs = {len(recognized_objects)}")
 
     yolo_annotations = []
@@ -253,5 +279,5 @@ while supervisor.step(timestep) != -1:
 
 cv2.destroyAllWindows()
 # Adicionar um pequeno step final pode ajudar a garantir que a simulação termine limpa
-robot.step(timestep)
+supervisor.step(timestep)
 print(f"Processo concluído. {img_counter} imagens salvas em '{SAVE_DIR_IMAGES}' e anotações em '{SAVE_DIR_LABELS}'.")
