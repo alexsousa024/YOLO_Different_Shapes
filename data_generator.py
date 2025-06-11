@@ -5,8 +5,8 @@ import os
 
 
 # --- Configurações ---
-SAVE_DIR_IMAGES = "dataset_test/images"
-SAVE_DIR_LABELS = "dataset_test/labels"
+SAVE_DIR_IMAGES = "dataset_simples_cor/images"
+SAVE_DIR_LABELS = "dataset_simples_cor/labels"
 ANNOTATION_FILENAME_PREFIX = "frame" # Nome base para imagens e anotações
 
 # Mapeamento: Nome do MODELO do objeto no Webots -> ID da classe YOLO (começando em 0)
@@ -74,6 +74,7 @@ target3 = supervisor.getFromDef("CONE")  # nome do DEF do novo objeto
 target3_rotation = target3.getField("rotation")
 target3_translation = target3.getField("translation")
 
+"""
 #Ball
 target4 = supervisor.getFromDef("Cube")  # nome do DEF do novo objeto
 target4_rotation = target4.getField("rotation")
@@ -98,6 +99,7 @@ target7_translation = target7.getField("translation")
 target8 = supervisor.getFromDef("Cylinder2")  # nome do DEF do novo objeto
 target8_rotation = target8.getField("rotation")
 target8_translation = target8.getField("translation")
+"""
 
 # --- Main Loop ---
 while supervisor.step(timestep) != -1 and img_counter < 2000:
@@ -115,12 +117,14 @@ while supervisor.step(timestep) != -1 and img_counter < 2000:
     target1_translation.setSFVec3f(pos1)
     target2_translation.setSFVec3f(pos2)
     target3_translation.setSFVec3f(pos3)
+    """
 
     target4_translation.setSFVec3f(pos4)
     target5_translation.setSFVec3f(pos5)
     target6_translation.setSFVec3f(pos6)
     target7_translation.setSFVec3f(pos7)
     target8_translation.setSFVec3f(pos8)
+    """
 
 
 
@@ -129,12 +133,13 @@ while supervisor.step(timestep) != -1 and img_counter < 2000:
     target1_rotation.setSFRotation([0, 1, 0, angle])
     target2_rotation.setSFRotation([0, 1, 0, angle])
     target3_rotation.setSFRotation([0, 1, 0, angle])
-
+    """
     target4_rotation.setSFRotation([0, 1, 0, angle])
     target5_rotation.setSFRotation([0, 1, 0, angle])
     target6_rotation.setSFRotation([0, 1, 0, angle])
     target7_rotation.setSFRotation([0, 1, 0, angle])
     target8_rotation.setSFRotation([0, 1, 0, angle])
+    """
 
     # Esperar até que todos os objetos estejam parados
     # Função auxiliar para verificar se o objeto está praticamente parado
@@ -277,12 +282,13 @@ while supervisor.step(timestep) != -1 and img_counter < 2000:
         set_random_color(target1)
         set_random_color(target2)
         set_random_color(target3)
-
+        """
         set_random_color(target4)
         set_random_color(target5)
         set_random_color(target6)
         set_random_color(target7)
         set_random_color(target8)
+        """
 
     cv2.imshow("Câmera de Detecção com BBoxes (Pressione 'q' para sair)", bgr_img_detection_viz)
 

@@ -1,6 +1,6 @@
 task: detect
 mode: train
-model: best.pt
+model: yolo_simple_model/model_training_run/training/weights/best.pt
 data: transferLearning.yaml
 epochs: 10
 time: null

@@ -1,6 +1,6 @@
 task: detect
 mode: train
-model: best.pt
+model: yolo_simple_model/model_training_run/training/weights/best.pt
 data: transferLearning.yaml
 epochs: 10
 time: null
@@ -28,7 +28,7 @@ resume: false
 amp: true
 fraction: 1.0
 profile: false
-freeze: null
+freeze: 10
 multi_scale: false
 overlap_mask: true
 mask_ratio: 4

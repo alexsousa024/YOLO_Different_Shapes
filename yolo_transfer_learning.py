@@ -1,5 +1,5 @@
 # yolo_transfer_learning.py
-
+from scipy.signal import freqz_zpk
 # 1. Load the model from 'yolo_complex_model'
 # 2. Load the dataset_inicial 'complexEnv'
 # 3. Choose which layers should be frozen
@@ -15,11 +15,11 @@ import os
 
 
 # ----------------------- Configuração -----------------------
-BASE_MODEL_PATH = 'best.pt'
-DATASET_PATH = 'split_dataset_1000'
+BASE_MODEL_PATH = 'yolo_simple_model/model_training_run/training/weights/best.pt'
+DATASET_PATH = 'split_dataset_500'
 DATASET_TEST_PATH = 'dataset_test'
 YAML_PATH = 'transferLearning.yaml'
-OUTPUT_BASE_DIR = 'yolo_transfer_learning_1000'
+OUTPUT_BASE_DIR = 'yolo_transfer_learning_500'
 NUM_CLASSES = 4
 CLASS_NAMES = ['sphere', 'cone', 'cylinder', 'cube']
 IMG_SIZE = 640
@@ -69,36 +69,13 @@ yaml_file = create_yaml(YAML_PATH)
 # ------------------- Carregar Modelo Pré-treinado ---------------------
 model = YOLO(BASE_MODEL_PATH)
 
-print("Estrutura do Modelo Do Ambiente Simples: ")
-print(model.model)
-
-# Atualizar manualmente o número de classes na camada de detecção (head)
-# Esta versão é compatível com versões que não têm reset_class()
-detect_layer = model.model.model[-1]  # última camada (Detect)
-ch = detect_layer.cv2[0][0].conv.in_channels  # extrai canais de entrada corretamente
-model.model.model[-1] = detect_layer.__class__(nc=NUM_CLASSES, ch=[ch, ch, ch])
-
-# model.model = model.model.reset_class(NUM_CLASSES)
-
-# --------------------- Congelar Camadas do Modelo ---------------------
-def freeze_backbone_layers(model):
-    # model.model refere-se à estrutura interna do modelo PyTorch dentro do objeto YOLO
-    for name, module in model.model.named_children():
-        # Condição para identificar o backbone:
-        # 1. 'backbone' in name: Algumas arquiteturas nomeiam explicitamente a seção do backbone.
-        # 2. name == '0': No YOLOv8, o backbone é tipicamente o primeiro grande bloco de camadas,
-        #    acessível como model.model[0] (ou seja, o filho com nome '0').
-        if 'backbone' in name or name == '0':
-            for param in module.parameters():
-
-                param.requires_grad = False
-    print("Camadas do backbone congeladas.")
-
-freeze_backbone_layers(model)
 
 
-print("Estrutura do Modelo Depois do Cangelamento das Camadas de Classificação: ")
-print(model.model)
+
+
+
+
+
 
 # ------------------------- Treinar Modelo -----------------------------
 print("Iniciando treino com Transfer Learning...")
@@ -106,6 +83,7 @@ print("Iniciando treino com Transfer Learning...")
 train_results = model.train(
     data=yaml_file,
     epochs=EPOCHS,
+    freeze = 10,
     imgsz=IMG_SIZE,
     project=training_project_dir,
     device=DEVICE,
