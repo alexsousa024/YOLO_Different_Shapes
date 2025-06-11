@@ -1,0 +1,37 @@
+{
+    "data_source_config": {
+        "pre_split_dataset_path": "/Users/alexandresousa/Desktop/Introduc\u0327a\u0303o a\u0300 Robo\u0301tica Inteligente/Trabalho Pra\u0301tico/split_dataset_500",
+        "total_images_in_split_folders": 701,
+        "training_images_count": 350,
+        "validation_images_count": 150,
+        "test_images_count": 201,
+        "train_percentage": "49.9%",
+        "validation_percentage": "21.4%",
+        "test_percentage": "28.7%"
+    },
+    "hyperparameters_used": {
+        "lr0": 0.005,
+        "batch": 16,
+        "label_smoothing": 0.0,
+        "weight_decay": 0.00025,
+        "epochs": 10,
+        "patience": 5,
+        "imgsz": 640
+    },
+    "training_duration_seconds": "552.13",
+    "trained_model_best_weights_path": "yolo_complex_model_500/model_training_run/training/weights/best.pt",
+    "yolo_training_output_dir": "yolo_complex_model_500/model_training_run/training",
+    "validation_metrics_from_training_run": {
+        "val_mAP50": 0.17781949039058348,
+        "val_mAP50-95": 0.11992820405518914,
+        "val_precision": 0.28801313668235673,
+        "val_recall": 0.24159547775180062
+    },
+    "test_set_metrics_on_trained_model": {
+        "precision": 0.40156614692202947,
+        "recall": 0.6027517732747227,
+        "mAP50": 0.48594206350689684,
+        "mAP50-95": 0.3119023399301379,
+        "test_run_output_dir": "yolo_complex_model_500/model_evaluation_run/test_set_evaluation_results"
+    }
+}

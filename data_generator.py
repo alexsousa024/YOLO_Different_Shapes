@@ -5,8 +5,8 @@ import os
 
 
 # --- Configurações ---
-SAVE_DIR_IMAGES = "dataset/images"
-SAVE_DIR_LABELS = "dataset/labels"
+SAVE_DIR_IMAGES = "dataset_test/images"
+SAVE_DIR_LABELS = "dataset_test/labels"
 ANNOTATION_FILENAME_PREFIX = "frame" # Nome base para imagens e anotações
 
 # Mapeamento: Nome do MODELO do objeto no Webots -> ID da classe YOLO (começando em 0)
@@ -47,6 +47,7 @@ print(f"Images saved in: {os.path.abspath(SAVE_DIR_IMAGES)}")
 print(f"Annotations saved: {os.path.abspath(SAVE_DIR_LABELS)}")
 
 img_counter = 0
+iteration_counter = 0
 
 print("Main loop initializing. To quit, press 'q'")
 
@@ -72,14 +73,14 @@ target2_translation = target2.getField("translation")
 target3 = supervisor.getFromDef("CONE")  # nome do DEF do novo objeto
 target3_rotation = target3.getField("rotation")
 target3_translation = target3.getField("translation")
-"""
+
 #Ball
-target4 = supervisor.getFromDef("CUBE")  # nome do DEF do novo objeto
+target4 = supervisor.getFromDef("Cube")  # nome do DEF do novo objeto
 target4_rotation = target4.getField("rotation")
 target4_translation = target4.getField("translation")
 
 #Ball
-target5 = supervisor.getFromDef("CUBE2")  # nome do DEF do novo objeto
+target5 = supervisor.getFromDef("Cube2")  # nome do DEF do novo objeto
 target5_rotation = target5.getField("rotation")
 target5_translation = target5.getField("translation")
 
@@ -97,50 +98,43 @@ target7_translation = target7.getField("translation")
 target8 = supervisor.getFromDef("Cylinder2")  # nome do DEF do novo objeto
 target8_rotation = target8.getField("rotation")
 target8_translation = target8.getField("translation")
-"""
-# --- Main Loop ---
-while supervisor.step(timestep) != -1:
 
-    camera_node = supervisor.getFromDef("MULTISENSOR")
-    if camera_node:
-        camera_translation_field = camera_node.getField("translation")
-        if camera_translation_field:
-            camera_translation_field.setSFVec3f([0.01, 0.01, 4])
+# --- Main Loop ---
+while supervisor.step(timestep) != -1 and img_counter < 2000:
 
     # Gerar posição aleatória
     pos1 = [np.random.uniform(*x_range), np.random.uniform(*y_range), np.random.uniform(*z_range)]
     pos2 = [np.random.uniform(*x_range), np.random.uniform(*y_range), np.random.uniform(*z_range)]
     pos3 = [np.random.uniform(*x_range), np.random.uniform(*y_range), np.random.uniform(*z_range)]
-    """
     pos4 = [np.random.uniform(*x_range), np.random.uniform(*y_range), np.random.uniform(*z_range)]
     pos5 = [np.random.uniform(*x_range), np.random.uniform(*y_range), np.random.uniform(*z_range)]
     pos6 = [np.random.uniform(*x_range), np.random.uniform(*y_range), np.random.uniform(*z_range)]
     pos7 = [np.random.uniform(*x_range), np.random.uniform(*y_range), np.random.uniform(*z_range)]
     pos8 = [np.random.uniform(*x_range), np.random.uniform(*y_range), np.random.uniform(*z_range)]
-    """
+
     target1_translation.setSFVec3f(pos1)
     target2_translation.setSFVec3f(pos2)
     target3_translation.setSFVec3f(pos3)
-    """
+
     target4_translation.setSFVec3f(pos4)
     target5_translation.setSFVec3f(pos5)
     target6_translation.setSFVec3f(pos6)
     target7_translation.setSFVec3f(pos7)
     target8_translation.setSFVec3f(pos8)
-    """
+
+
 
     # Aplicar rotação aleatória
     angle = np.random.uniform(0, 3.14)
     target1_rotation.setSFRotation([0, 1, 0, angle])
     target2_rotation.setSFRotation([0, 1, 0, angle])
     target3_rotation.setSFRotation([0, 1, 0, angle])
-    """
+
     target4_rotation.setSFRotation([0, 1, 0, angle])
     target5_rotation.setSFRotation([0, 1, 0, angle])
     target6_rotation.setSFRotation([0, 1, 0, angle])
     target7_rotation.setSFRotation([0, 1, 0, angle])
     target8_rotation.setSFRotation([0, 1, 0, angle])
-    """
 
     # Esperar até que todos os objetos estejam parados
     # Função auxiliar para verificar se o objeto está praticamente parado
@@ -151,14 +145,20 @@ while supervisor.step(timestep) != -1:
         linear_velocity = vel[:3]
         return np.linalg.norm(linear_velocity) < threshold
 
-    while True:
+    # Timeout de 5 segundos (5000 ms)
+    max_wait_time_ms = 5000
+    elapsed_time_ms = 0
+    while elapsed_time_ms < max_wait_time_ms:
         supervisor.step(timestep)
+        elapsed_time_ms += timestep
         if all([
             is_object_stationary(target1),
             is_object_stationary(target2),
             is_object_stationary(target3)
         ]):
             break
+    else:
+        print("Aviso: Timeout de 5 segundos atingido antes de todos os objetos pararem.")
 
     # Pequeno atraso antes de capturar a imagem
     for _ in range(int(0.1 * 1000 / timestep)):
@@ -265,6 +265,24 @@ while supervisor.step(timestep) != -1:
         print(f"Erro ao salvar anotação em {label_path}: {e}")
 
     img_counter += 1
+    iteration_counter += 1
+
+    if iteration_counter % 10 == 0:
+        def set_random_color(target):
+            shape_node = target.getField("children").getMFNode(0).getField("appearance").getSFNode().getField("material").getSFNode()
+            color_field = shape_node.getField("diffuseColor")
+            random_color = [np.random.rand(), np.random.rand(), np.random.rand()]
+            color_field.setSFColor(random_color)
+
+        set_random_color(target1)
+        set_random_color(target2)
+        set_random_color(target3)
+
+        set_random_color(target4)
+        set_random_color(target5)
+        set_random_color(target6)
+        set_random_color(target7)
+        set_random_color(target8)
 
     cv2.imshow("Câmera de Detecção com BBoxes (Pressione 'q' para sair)", bgr_img_detection_viz)
 

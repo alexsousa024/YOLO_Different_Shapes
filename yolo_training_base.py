@@ -10,9 +10,9 @@ import numpy as np
 import pathlib # For isinstance check
 
 # --- Configuration ---
-# Path to your pre-split dataset
+# Path to your pre-split dataset_inicial
 pre_split_dataset_base_path = 'split_dataset' # Main directory for pre-split data
-output_base_dir = 'yolo_base_model' # Main output directory
+output_base_dir = 'yolo_complex_model'  # Main output directory
 img_ext = '.png' # Ensure this matches your image files in split_dataset
 
 # Splitting configuration is no longer needed as data is pre-split

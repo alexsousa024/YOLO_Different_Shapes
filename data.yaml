@@ -1,4 +1,4 @@
-path: dataset  # Caminho raiz do seu conjunto de dados
+path: dataset_inicial  # Caminho raiz do seu conjunto de dados
 train: train            # Caminho relativo para as imagens de treino
 val: val                # Caminho relativo para as imagens de validação
 nc: 3                         # Número de classes
