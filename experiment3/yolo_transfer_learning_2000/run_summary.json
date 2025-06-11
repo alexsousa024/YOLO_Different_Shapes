@@ -1,0 +1,46 @@
+{
+  "model_path": "best.pt",
+  "test_dataset_path": "dataset_test/images",
+  "test_images_count": 201,
+  "image_size": 640,
+  "test_device": "mps",
+  "test_metrics": {
+    "overall": {
+      "precision": 0.840,
+      "recall": 0.818,
+      "mAP50": 0.888,
+      "mAP50-95": 0.706,
+      "instances": 1444
+    },
+    "per_class": {
+      "sphere": {
+        "precision": 0.835,
+        "recall": 0.925,
+        "mAP50": 0.959,
+        "mAP50-95": 0.920,
+        "instances": 371
+      },
+      "cone": {
+        "precision": 0.797,
+        "recall": 0.867,
+        "mAP50": 0.909,
+        "mAP50-95": 0.749,
+        "instances": 362
+      },
+      "cylinder": {
+        "precision": 0.875,
+        "recall": 0.657,
+        "mAP50": 0.804,
+        "mAP50-95": 0.487,
+        "instances": 372
+      },
+      "cube": {
+        "precision": 0.854,
+        "recall": 0.823,
+        "mAP50": 0.882,
+        "mAP50-95": 0.670,
+        "instances": 339
+      }
+    }
+  }
+}

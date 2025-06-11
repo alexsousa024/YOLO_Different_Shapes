@@ -1,0 +1,122 @@
+# --------------- Requirements ---------------
+
+certifi==2025.4.26
+charset-normalizer==3.4.2
+contourpy==1.3.2
+cycler==0.12.1
+filelock==3.18.0
+fonttools==4.58.0
+fsspec==2025.3.2
+idna==3.10
+Jinja2==3.1.6
+joblib==1.5.0
+kiwisolver==1.4.5
+MarkupSafe==3.0.2
+matplotlib==3.10.3
+mpmath==1.3.0
+networkx==3.4.2
+numpy==2.2.4
+opencv-python==4.11.0.86
+packaging==25.0
+pandas==2.2.3
+Pillow==11.2.1
+pip==25.1.1
+psutil==7.0.0
+py-cpuinfo==9.0.0
+pyparsing==3.2.3
+python-dateutil==2.9.0.post0
+pytz==2025.2
+PyYAML==6.0.2
+requests==2.32.3
+scikit-learn==1.6.1
+scipy==1.15.3
+seaborn==0.13.2
+setuptools==80.4.0
+six==1.17.0
+sympy==1.14.0
+threadpoolctl==3.6.0
+torch==2.7.0
+torchvision==0.22.0
+tqdm==4.67.1
+typing_extensions==4.13.2
+tzdata==2025.2
+ultralytics==8.3.131
+ultralytics-thop==2.0.14
+urllib3==2.4.0
+
+
+
+
+# --------------- Compatible OS ---------------
+
+This project is compatible with all OS, since the packages described above are correctly installed.
+
+
+
+
+
+# --------------- README ---------------
+
+# Transfer Learning for Object Detection and Classification in Robot Perception
+Pratical work of Inteligent Robotic's class in 3rd year of Bsc of Artificial Intelligence and Data Science.
+
+
+Work developed by Alexandre Sousa, Marta Longo and Sara Táboas
+
+
+### **Set Up**
+- Start by installing all the libraries and dependencies needed for this project, by running the following command: 
+```
+pip install -r requirements.txt
+```
+
+### **Webots Maps**
+- 'base.wbt' : map for the simple environment, consisting of 3 different objects (used for dataset (A))
+- 'complex.wbt' : map for the complex environment, consisting of 8 different objects (used for dataset (B))
+
+### **Datasets and Splits Generation**
+**1. Dataset (A) :** 
+- Generation : 
+```
+python dataset_a/data_generator.py
+```
+- Splitting (train, val and test sets) : 
+```
+python dataset_a/create_folders.py
+```
+
+**2. Dataset (B) :** 
+- Generation : 
+```
+python dataset_b/data_generator_complex.py
+```
+- To generate the dataset for testing (containing 200 images), run the data_generator_complex.py file, replacing the line 101 by 'while supervisor.step(timestep) != -1 and img_counter < 200:'.
+
+
+- Splitting (train, val and test sets) for 500 images: 
+```
+python dataset_b/create_folders_500.py
+```
+- To obtain the splits for both 1000 and 2000 images, replace in the command above the file by create_folders_1000.py and create_folders_2000.py, respectively.
+
+
+### **Experiment #1**
+YOLO training with the Dataset (A). The results of both training and test will be saved in the yolo_base_model folder (does not need to be generated).
+```
+python experiment1/yolo_training_base.py
+```
+
+### **Experiment #2**
+YOLO training with the Dataset (B) - 500 images. The results of both training and test will be saved in the yolo_complex_model_500 folder (does not need to be generated).
+```
+python experiment2/yolo_training_complex.py
+```
+For the dataset splits with 1000 and 2000 images, run the command above, replacing the correct dataset split paths from the dataset_b folder and readjusting the output_dir name (yolo_complex_model_1000 and yolo_complex_model_2000).
+
+### **Experiment #3**
+YOLO training with the Dataset (B) - 500 images. The results of both training and test will be saved in the yolo_transfer_learning_500 folder (does not need to be generated).
+```
+python experiment3/yolo_transfer_learning.py
+```
+For the dataset splits with 1000 and 2000 images, run the command above, replacing the correct dataset split paths from the dataset_b folder and readjusting the output_dir name (yolo_transfer_learning_1000 and yolo_transfer_learning_2000).
+

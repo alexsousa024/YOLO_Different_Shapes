@@ -1,0 +1,11 @@
+names:
+- sphere
+- cone
+- cylinder
+nc: 3
+test: "/Users/alexandresousa/Desktop/Introduc\u0327a\u0303o a\u0300 Robo\u0301tica\
+  \ Inteligente/Trabalho Pra\u0301tico/yolo_base_model/run_data_setup/test_data_for_eval/images/test"
+train: "/Users/alexandresousa/Desktop/Introduc\u0327a\u0303o a\u0300 Robo\u0301tica\
+  \ Inteligente/Trabalho Pra\u0301tico/yolo_base_model/run_data_setup/test_data_for_eval/images/test"
+val: "/Users/alexandresousa/Desktop/Introduc\u0327a\u0303o a\u0300 Robo\u0301tica\
+  \ Inteligente/Trabalho Pra\u0301tico/yolo_base_model/run_data_setup/test_data_for_eval/images/test"

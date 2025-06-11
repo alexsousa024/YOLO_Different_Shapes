@@ -1,0 +1,9 @@
+names:
+- sphere
+- cone
+- cylinder
+- cube
+nc: 4
+test: ../dataset_b/dataset_test/images
+train: ../dataset_b/split_dataset_2000/train/images
+val: ../dataset_b/split_dataset_2000/val/images

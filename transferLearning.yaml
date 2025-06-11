@@ -1,9 +1,0 @@
-names:
-- sphere
-- cone
-- cylinder
-- cube
-nc: 4
-test: dataset_test/images
-train: split_dataset_500/train/images
-val: split_dataset_500/val/images
